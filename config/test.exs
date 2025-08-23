@@ -6,8 +6,14 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :payfi, Payfi.Repo,
-  database: Path.expand("../payfi_test.db", __DIR__),
+  username: "postgres",
+  password: "postgres",
+  database: "payfi_dev",
+  hostname: "localhost",
+  port: 5500,
   pool_size: 5,
+  stacktrace: true,
+  show_sensitive_data_on_connection_error: true,
   pool: Ecto.Adapters.SQL.Sandbox
 
 # We don't run a server during test. If one is required,

@@ -2,7 +2,11 @@ import Config
 
 # Configure your database
 config :payfi, Payfi.Repo,
-  database: Path.expand("../payfi_dev.db", __DIR__),
+  username: "postgres",
+  password: "postgres",
+  database: "payfi_dev",
+  hostname: "localhost",
+  port: 5500,
   pool_size: 5,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true
