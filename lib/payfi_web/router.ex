@@ -26,7 +26,7 @@ defmodule PayfiWeb.Router do
 
     post "/user/create", UserController, :create
     post "/draw/create", DrawController, :create
-    post "/draw/participate", DrawController, :participate
+    post "/participation/create", ParticipationController, :create
     get "/draw/result/:id", DrawController, :get_result
   end
 

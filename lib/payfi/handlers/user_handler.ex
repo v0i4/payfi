@@ -18,6 +18,7 @@ defmodule Payfi.Handlers.UserHandler do
     with {:ok, user} <- Accounts.create_user(params) do
       {:reply, {:ok, user}, state}
     else
+      {:error, reason} -> {:reply, {:error, reason}, state}
       _ -> {:reply, {:error, "Error creating user"}, state}
     end
   end

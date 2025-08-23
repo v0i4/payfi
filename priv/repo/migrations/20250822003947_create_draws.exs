@@ -5,6 +5,7 @@ defmodule Payfi.Repo.Migrations.CreateDraws do
     create table(:draws) do
       add :name, :string
       add :date, :date
+      add :winner_id, references(:users, on_delete: :delete_all)
       add :active, :boolean, default: true
 
       timestamps(type: :utc_datetime)

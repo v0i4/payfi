@@ -1,4 +1,6 @@
 defmodule Payfi.Draws do
+  alias Payfi.Utils
+
   @moduledoc """
   The Draws context.
   """
@@ -49,19 +51,33 @@ defmodule Payfi.Draws do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_draw(%{"name" => name, "date" => date}) do
-    [year, month, day] =
-      date
-      |> String.split("/")
-      |> Enum.map(fn item -> String.to_integer(item) end)
 
-    {:ok, new_date} = Date.new(year, month, day)
+  def get_draw(id) do
+    Repo.get(Draw, id)
+  end
 
-    attrs = %{name: name, date: new_date}
+  def create_draw(%{"name" => name, "date" => date})
+      when not is_nil(name) and is_bitstring(date) do
+    with {:ok, new_date} <- Date.from_iso8601(date) do
+      attrs = %{name: name, date: new_date}
 
-    %Draw{}
-    |> Draw.changeset(attrs)
-    |> Repo.insert()
+      %Draw{}
+      |> Draw.changeset(attrs)
+      |> Repo.insert()
+    else
+      {:error, reason} -> {:error, inspect(reason)}
+    end
+  end
+
+  def create_draw(attrs) do
+    with {:ok, draw} <-
+           %Draw{}
+           |> Draw.changeset(attrs)
+           |> Repo.insert() do
+      {:ok, draw}
+    else
+      {:error, reason} -> {:error, Utils.get_error_message(reason)}
+    end
   end
 
   @doc """
@@ -109,5 +125,16 @@ defmodule Payfi.Draws do
   """
   def change_draw(%Draw{} = draw, attrs \\ %{}) do
     Draw.changeset(draw, attrs)
+  end
+
+  def get_result(draw_id) do
+    with %Draw{} = draw <- get_draw(draw_id),
+         true <- not draw.active do
+      winner = Payfi.Accounts.get_user!(draw.winner_id)
+
+      {:ok, winner}
+    else
+      _ -> {:error, "This draw does not have a winner yet."}
+    end
   end
 end

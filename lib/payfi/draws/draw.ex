@@ -8,8 +8,6 @@ defmodule Payfi.Draws.Draw do
     field :active, :boolean, default: true
     field :winner_id, :integer
 
-    has_many :users, Payfi.Accounts.User
-
     timestamps(type: :utc_datetime)
   end
 

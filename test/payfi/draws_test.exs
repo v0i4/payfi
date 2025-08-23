@@ -29,7 +29,8 @@ defmodule Payfi.DrawsTest do
     end
 
     test "create_draw/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Draws.create_draw(@invalid_attrs)
+      assert {:error, "name can't be blank, date can't be blank"} =
+               Draws.create_draw(@invalid_attrs)
     end
 
     test "update_draw/2 with valid data updates the draw" do
