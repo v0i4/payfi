@@ -24,3 +24,8 @@ Para inicializar o projeto, execute:
 * para executar um determinado sorteio manualmente execute dentro do iex> `Payfi.Draws.run(<id_do_sorteio>)`
 * para rodar o job manualmente execute dentro do iex> `Payfi.Workers.DailyDrawRun.perform(%Oban.Job{args: %{}})`
 * obs: foram utilizadas portas customizadas(4002 para aplicacao e 5500 para o banco) - se quiser alterar, altere no arquivos `config/dev.exs, config/test.exs` e `config/runtime.exs`
+* para verificar a cobertura de testes execute: MIX_ENV=test mix coveralls.html - relatorio html salvo dentro da pasta /cover
+
+## setup utilizado
+* erlang-otp-27
+* elixir-1.18.2

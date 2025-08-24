@@ -5,11 +5,11 @@ info:
   version: "1.0.0"
 
 servers:
-  - url: http://localhost:4000
+  - url: http://localhost:4002
     description: Servidor local
 
 paths:
-  /user/create:
+  /api/user/create:
     post:
       summary: Criar Usuário
       description: Cria um novo usuário no sistema.
@@ -42,7 +42,7 @@ paths:
                     type: integer
                     example: 1
 
-  /draw/create:
+  /api/draw/create:
     post:
       summary: Criar Sorteio
       description: Cria um novo sorteio.
@@ -75,7 +75,7 @@ paths:
                     type: integer
                     example: 10
 
-  /participation/create:
+  /api/participation/create:
     post:
       summary: Participar de um Sorteio
       description: Registra a participação de um usuário em um sorteio.
@@ -107,7 +107,7 @@ paths:
                     type: string
                     example: ok
 
-  /draw/result/{id}:
+  /api/draw/result/{id}:
     get:
       summary: Consultar Resultado do Sorteio
       description: Retorna o vencedor de um sorteio, caso já tenha sido encerrado.
