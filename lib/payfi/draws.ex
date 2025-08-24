@@ -56,19 +56,6 @@ defmodule Payfi.Draws do
     Repo.get(Draw, id)
   end
 
-  def create_draw(%{"name" => name, "date" => date})
-      when not is_nil(name) and is_bitstring(date) do
-    with {:ok, new_date} <- Date.from_iso8601(date) do
-      attrs = %{name: name, date: new_date}
-
-      %Draw{}
-      |> Draw.changeset(attrs)
-      |> Repo.insert()
-    else
-      {:error, reason} -> {:error, inspect(reason)}
-    end
-  end
-
   def create_draw(attrs) do
     with {:ok, draw} <-
            %Draw{}

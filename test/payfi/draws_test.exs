@@ -21,11 +21,11 @@ defmodule Payfi.DrawsTest do
     end
 
     test "create_draw/1 with valid data creates a draw" do
-      valid_attrs = %{name: "some name", date: ~D[2025-08-21]}
+      valid_attrs = %{name: "some name", date: ~D[2099-01-01]}
 
       assert {:ok, %Draw{} = draw} = Draws.create_draw(valid_attrs)
       assert draw.name == "some name"
-      assert draw.date == ~D[2025-08-21]
+      assert draw.date == ~D[2099-01-01]
     end
 
     test "create_draw/1 with invalid data returns error changeset" do
@@ -35,11 +35,11 @@ defmodule Payfi.DrawsTest do
 
     test "update_draw/2 with valid data updates the draw" do
       draw = draw_fixture()
-      update_attrs = %{name: "some updated name", date: ~D[2025-08-22]}
+      update_attrs = %{name: "some updated name", date: ~D[2099-01-01]}
 
       assert {:ok, %Draw{} = draw} = Draws.update_draw(draw, update_attrs)
       assert draw.name == "some updated name"
-      assert draw.date == ~D[2025-08-22]
+      assert draw.date == ~D[2099-01-01]
     end
 
     test "update_draw/2 with invalid data returns error changeset" do

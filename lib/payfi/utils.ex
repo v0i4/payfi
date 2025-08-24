@@ -6,4 +6,8 @@ defmodule Payfi.Utils do
       |> Enum.join(", ")
     end
   end
+
+  def get_error_message(error) do
+    error
+  end
 end

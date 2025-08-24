@@ -9,12 +9,13 @@ defmodule Payfi.Participations do
   def create_participation(%{"user_id" => user_id, "draw_id" => draw_id} = _params) do
     with true <- not is_nil(user_id) and not is_nil(draw_id),
          %Accounts.User{} = user <- Accounts.get_user(user_id),
-         %Draws.Draw{} = draw <- Draws.get_draw(draw_id) do
+         %Draws.Draw{} = draw <- Draws.get_draw(draw_id),
+         true <- draw.active do
       %Participation{}
       |> Participation.changeset(%{user_id: user.id, draw_id: draw.id})
       |> Repo.insert()
     else
-      _ -> {:error, "Invalid params"}
+      _ -> {:error, "Incorrect params or this draw is already expired"}
     end
   end
 

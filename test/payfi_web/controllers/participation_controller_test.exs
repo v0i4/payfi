@@ -1,5 +1,6 @@
 defmodule PayfiWeb.ParticipationControllerTest do
   use PayfiWeb.ConnCase
+  use Oban.Testing, repo: Payfi.Repo
   alias Payfi.AccountsFixtures
   alias Payfi.DrawsFixtures
 
@@ -38,7 +39,7 @@ defmodule PayfiWeb.ParticipationControllerTest do
 
       assert length(participations) == 0
       assert conn.status == 422
-      assert conn.resp_body == "{\"error\":\"Invalid params\"}"
+      assert conn.resp_body == "{\"error\":\"Incorrect params or this draw is already expired\"}"
     end
 
     test "participation must fail when user try to join twice at the same draw", %{conn: conn} do
@@ -67,7 +68,9 @@ defmodule PayfiWeb.ParticipationControllerTest do
 
       assert length(participations) == 1
       assert second_conn.status == 422
-      assert second_conn.resp_body == "{\"error\":\"user_id has already been taken\"}"
+
+      assert second_conn.resp_body ==
+               "{\"error\":\"user_id has already been taken\"}"
     end
 
     test "participation create fail when user try to join a non existing draw", %{conn: conn} do
@@ -86,7 +89,7 @@ defmodule PayfiWeb.ParticipationControllerTest do
 
       assert length(participations) == 0
       assert conn.status == 422
-      assert conn.resp_body == "{\"error\":\"Invalid params\"}"
+      assert conn.resp_body == "{\"error\":\"Incorrect params or this draw is already expired\"}"
     end
 
     test "participation create fail when user try to join a non existing user", %{conn: conn} do
@@ -105,7 +108,7 @@ defmodule PayfiWeb.ParticipationControllerTest do
 
       assert length(participations) == 0
       assert conn.status == 422
-      assert conn.resp_body == "{\"error\":\"Invalid params\"}"
+      assert conn.resp_body == "{\"error\":\"Incorrect params or this draw is already expired\"}"
     end
 
     test "participation create fail when user try to join a non existing user and draw", %{
@@ -122,6 +125,38 @@ defmodule PayfiWeb.ParticipationControllerTest do
       assert length(participations) == 0
       assert conn.status == 422
       assert conn.resp_body == "{\"error\":\"Invalid params\"}"
+    end
+
+    test "participation should fail when draw is not active anymore", %{conn: conn} do
+      user = AccountsFixtures.user_fixture()
+      draw = DrawsFixtures.draw_fixture()
+
+      params = %{
+        "user_id" => user.id,
+        "draw_id" => draw.id
+      }
+
+      conn =
+        conn
+        |> post("/api/participation/create", params)
+
+      assert conn.status == 201
+
+      perform_job(Payfi.Workers.DailyDrawRun, %{})
+
+      another_user = AccountsFixtures.user_fixture()
+
+      new_params = %{
+        "user_id" => another_user.id,
+        "draw_id" => draw.id
+      }
+
+      conn =
+        conn
+        |> post("/api/participation/create", new_params)
+
+      assert conn.status == 422
+      assert conn.resp_body == "{\"error\":\"Incorrect params or this draw is already expired\"}"
     end
   end
 end

@@ -1,6 +1,7 @@
 defmodule PayfiWeb.DrawController do
   use PayfiWeb, :controller
   alias Payfi.Handlers.DrawHandler
+  alias Payfi.Utils
 
   def create(conn, params) do
     with {:ok, draw} <- DrawHandler.create_draw(params) do
@@ -11,7 +12,7 @@ defmodule PayfiWeb.DrawController do
       {:error, reason} ->
         conn
         |> put_status(422)
-        |> json(%{error: reason})
+        |> json(%{error: Utils.get_error_message(reason)})
     end
   end
 

@@ -7,13 +7,13 @@ defmodule PayfiWeb.DrawControllerTest do
 
   @invalid_attrs %{name: nil, date: nil}
   @invalid_date_format_attrs %{name: nil, date: "01/01/2022"}
-  @valid_date_missing_name %{name: nil, date: "2022-01-01"}
+  @valid_date_missing_name %{name: nil, date: "2099-01-01"}
 
   describe "draw routes" do
     test "draw create success", %{conn: conn} do
       params = %{
         "name" => "draw 1",
-        "date" => "2022-01-01"
+        "date" => Date.utc_today() |> to_string()
       }
 
       conn =
@@ -62,6 +62,23 @@ defmodule PayfiWeb.DrawControllerTest do
       assert length(draws) == 0
       assert conn.status == 422
       assert conn.resp_body == "{\"error\":\"name can't be blank\"}"
+    end
+
+    test "draw create should fail when date is in the past", %{conn: conn} do
+      past_date = %{
+        "name" => "draw 1",
+        "date" => "2021-01-01"
+      }
+
+      conn =
+        conn
+        |> post("/api/draw/create", past_date)
+
+      draws = Payfi.Draws.list_draws()
+
+      assert length(draws) == 0
+      assert conn.status == 422
+      assert conn.resp_body == "{\"error\":\"date must be in the future\"}"
     end
 
     test "draw result - after run", %{conn: conn} do
