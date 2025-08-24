@@ -19,9 +19,7 @@ defmodule Payfi.Application do
       # {Payfi.Worker, arg},
       # Start to serve requests, typically the last entry
       PayfiWeb.Endpoint,
-      {Payfi.Handlers.UserHandler, []},
-      {Payfi.Handlers.DrawHandler, []},
-      {Payfi.Handlers.ParticipationHandler, []}
+      {Payfi.HandlersSupervisor, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

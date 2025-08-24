@@ -14,19 +14,12 @@
 * rota para participar de um sorteio, recebe um id de usuário e um id de sorteio e retorna ok;
 * rota para consultar o resultado de um sorteio, recebe um id de sorteio e retorna o id, nome e email do usuário que ganhou, ou o erro apropriado caso o sorteio não tenha sido encerrado;
 
-To start your Phoenix server:
+Para inicializar o projeto, execute:
 
-* Run `mix setup` to install and setup dependencies
+* `mix setup` to install e configurar depenencias;
 * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+* documentacao das rotas/endpoints: http://localhost:4002/swagger
+* existe um job do Oban que roda diriamente as 0h procurando por todos os sorteios cadastrados pra aquela data e sorteia um ganhador.
+* para executar um determinado sorteio manualmente execute: `Payfi.Draws.run(<id_do_sorteio>)`
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-* Official website: https://www.phoenixframework.org/
-* Guides: https://hexdocs.pm/phoenix/overview.html
-* Docs: https://hexdocs.pm/phoenix
-* Forum: https://elixirforum.com/c/phoenix-forum
-* Source: https://github.com/phoenixframework/phoenix

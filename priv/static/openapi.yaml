@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: API de Sorteios
+  description: API para cadastro de usuários, criação de sorteios, participação e consulta de resultados.
+  version: "1.0.0"
+
+servers:
+  - url: http://localhost:4000
+    description: Servidor local
+
+paths:
+  /user/create:
+    post:
+      summary: Criar Usuário
+      description: Cria um novo usuário no sistema.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+              properties:
+                name:
+                  type: string
+                  example: João Silva
+                email:
+                  type: string
+                  format: email
+                  example: joao@email.com
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+
+  /draw/create:
+    post:
+      summary: Criar Sorteio
+      description: Cria um novo sorteio.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - date
+              properties:
+                name:
+                  type: string
+                  example: Sorteio de Natal
+                date:
+                  type: string
+                  format: date
+                  example: 2025-12-24
+      responses:
+        "201":
+          description: Sorteio criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 10
+
+  /participation/create:
+    post:
+      summary: Participar de um Sorteio
+      description: Registra a participação de um usuário em um sorteio.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user_id
+                - draw_id
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+                draw_id:
+                  type: integer
+                  example: 10
+      responses:
+        "200":
+          description: Participação registrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+  /draw/result/{id}:
+    get:
+      summary: Consultar Resultado do Sorteio
+      description: Retorna o vencedor de um sorteio, caso já tenha sido encerrado.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: ID do sorteio
+      responses:
+        "200":
+          description: Resultado do sorteio
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: João Silva
+                  email:
+                    type: string
+                    format: email
+                    example: joao@email.com
+        "400":
+          description: Sorteio ainda não encerrado
+        "404":
+          description: Sorteio não encontrado

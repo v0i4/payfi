@@ -18,6 +18,8 @@ defmodule PayfiWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/openapi.yaml", ApiDocsController, :index
+    get "/swagger", SwaggerController, :index
   end
 
   # Other scopes may use custom stacks.
