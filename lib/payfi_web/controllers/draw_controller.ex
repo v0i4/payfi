@@ -18,12 +18,12 @@ defmodule PayfiWeb.DrawController do
   def get_result(conn, %{"id" => id}) do
     with {:ok, winner} <- DrawHandler.get_result(id) do
       conn
-      |> put_status(203)
+      |> put_status(200)
       |> json(%{result: winner})
     else
       {:error, reason} ->
         conn
-        |> put_status(:bad_request)
+        |> put_status(404)
         |> json(%{error: reason})
     end
   end

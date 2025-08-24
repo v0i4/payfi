@@ -10,6 +10,7 @@ defmodule Payfi.Application do
     children = [
       PayfiWeb.Telemetry,
       Payfi.Repo,
+      {Oban, Application.fetch_env!(:payfi, Oban)},
       {Ecto.Migrator,
        repos: Application.fetch_env!(:payfi, :ecto_repos), skip: skip_migrations?()},
       {DNSCluster, query: Application.get_env(:payfi, :dns_cluster_query) || :ignore},

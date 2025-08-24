@@ -19,6 +19,7 @@ defmodule Payfi.DataCase do
   using do
     quote do
       alias Payfi.Repo
+      use Oban.Testing, repo: Payfi.Repo
 
       import Ecto
       import Ecto.Changeset

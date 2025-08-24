@@ -14,7 +14,7 @@ defmodule Payfi.Draws.Draw do
   @doc false
   def changeset(draw, attrs) do
     draw
-    |> cast(attrs, [:name, :date])
+    |> cast(attrs, [:name, :date, :active, :winner_id])
     |> validate_required([:name, :date])
   end
 end

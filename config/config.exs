@@ -60,6 +60,24 @@ config :logger, :default_formatter,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# oban
+config :payfi, Oban,
+  engine: Oban.Engines.Basic,
+  queues: [daily_draw_run: 10],
+  repo: Payfi.Repo
+
+config :payfi, Oban,
+  plugins: [
+    {Oban.Plugins.Cron,
+     crontab: [
+       {"* * * * *", Payfi.Workers.MinuteWorker, max_attempts: 5, queue: :daily_draw_run},
+       # {"0 * * * *", Payfi.HourlyWorker, args: %{custom: "arg"}},
+       {"0 0 * * *", Payfi.Workers.DailyDrawRun, max_attempts: 5, queue: :daily_draw_run}
+       # {"0 12 * * MON", Payfi.MondayWorker, queue: :scheduled, tags: ["mondays"]},
+       # {"@daily", Payfi.AnotherDailyWorker}
+     ]}
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

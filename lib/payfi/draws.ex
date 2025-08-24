@@ -132,9 +132,39 @@ defmodule Payfi.Draws do
          true <- not draw.active do
       winner = Payfi.Accounts.get_user!(draw.winner_id)
 
-      {:ok, winner}
+      result = %{
+        id: winner.id,
+        name: winner.name,
+        email: winner.email
+      }
+
+      {:ok, result}
     else
       _ -> {:error, "This draw does not have a winner yet."}
+    end
+  end
+
+  def run(draw_id) do
+    with %Draw{} = draw <- get_draw(draw_id),
+         true <- draw.active do
+      if draw.date >= Date.utc_today() do
+        if length(Payfi.Participations.list_participations(draw_id)) > 0 do
+          winner =
+            Payfi.Participations.list_participations(draw_id)
+            |> Enum.random()
+
+          draw
+          |> Draw.changeset(%{active: false, winner_id: winner.user_id})
+          |> Repo.update()
+        else
+          {:error, "There are no participants in this draw."}
+        end
+      else
+        {:error, "This draw has not ocurred yet"}
+      end
+    else
+      false -> {:error, "This draw is not active."}
+      _ -> {:error, "This draw does not exist."}
     end
   end
 end

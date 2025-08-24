@@ -4,6 +4,8 @@ defmodule Payfi.Participations do
   alias Payfi.Participations.Participation
   alias Payfi.Repo
 
+  import Ecto.Query
+
   def create_participation(%{"user_id" => user_id, "draw_id" => draw_id} = _params) do
     with true <- not is_nil(user_id) and not is_nil(draw_id),
          %Accounts.User{} = user <- Accounts.get_user(user_id),
@@ -18,7 +20,13 @@ defmodule Payfi.Participations do
 
   def create_participation(_), do: {:error, "Invalid params"}
 
-  def list_participations do
-    Repo.all(Participation)
+  def list_participations() do
+    from(p in Participation)
+    |> Repo.all()
+  end
+
+  def list_participations(draw_id) do
+    from(p in Participation, where: p.draw_id == ^draw_id)
+    |> Repo.all()
   end
 end

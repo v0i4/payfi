@@ -17,6 +17,10 @@ defmodule Payfi.Handlers.DrawHandler do
     GenServer.call(__MODULE__, {:get_result, draw_id})
   end
 
+  def run_draw(draw_id) do
+    GenServer.call(__MODULE__, {:run, draw_id})
+  end
+
   def handle_call({:create_draw, params}, _from, state) do
     with {:ok, draw} <- Payfi.Draws.create_draw(params) do
       {:reply, {:ok, draw}, state}
@@ -29,7 +33,15 @@ defmodule Payfi.Handlers.DrawHandler do
     with {:ok, draw} <- Payfi.Draws.get_result(draw_id) do
       {:reply, {:ok, draw}, state}
     else
-      _ -> {:reply, {:error, "Error getting draw result"}, state}
+      {:error, reason} -> {:reply, {:error, reason}, state}
+    end
+  end
+
+  def handle_call({:run, draw_id}, _from, state) do
+    with {:ok, draw} <- Payfi.Draws.run(draw_id) do
+      {:reply, {:ok, draw}, state}
+    else
+      _ -> {:reply, {:error, "Error running draw"}, state}
     end
   end
 end
