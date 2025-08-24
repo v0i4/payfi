@@ -17,9 +17,11 @@ defmodule PayfiWeb.Router do
   scope "/", PayfiWeb do
     pipe_through :browser
 
+    # coveralls-ignore-start
     get "/", PageController, :home
     get "/openapi.yaml", ApiDocsController, :index
     get "/swagger", SwaggerController, :index
+    # coveralls-ignore-stop
   end
 
   # Other scopes may use custom stacks.

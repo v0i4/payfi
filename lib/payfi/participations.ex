@@ -15,7 +15,6 @@ defmodule Payfi.Participations do
       |> Participation.changeset(%{user_id: user.id, draw_id: draw.id})
       |> Repo.insert()
     else
-      {:cache, true} -> {:error, "user_id has already been taken"}
       _ -> {:error, "Incorrect params or this draw is already expired"}
     end
   end

@@ -17,9 +17,10 @@
 Para inicializar o projeto, execute:
 
 * `mix setup` to install e configurar depenencias;
-* Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+* inicie a aplicacao com `mix phx.server` ou `iex -S mix phx.server`
 
 * documentacao das rotas/endpoints: http://localhost:4002/swagger
 * existe um job do Oban que roda diriamente as 0h procurando por todos os sorteios cadastrados pra aquela data e sorteia um ganhador.
-* para executar um determinado sorteio manualmente execute: `Payfi.Draws.run(<id_do_sorteio>)`
-
+* para executar um determinado sorteio manualmente execute dentro do iex> `Payfi.Draws.run(<id_do_sorteio>)`
+* para rodar o job manualmente execute dentro do iex> `Payfi.Workers.DailyDrawRun.perform(%Oban.Job{args: %{}})`
+* obs: foram utilizadas portas customizadas(4002 para aplicacao e 5500 para o banco) - se quiser alterar, altere no arquivos `config/dev.exs, config/test.exs` e `config/runtime.exs`

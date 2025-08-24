@@ -1,0 +1,16 @@
+{
+  "skip_files": [
+    "lib/payfi/mailer.ex",
+    "lib/payfi_web/components/",
+    "lib/payfi_web/controllers/api_docs_controller.ex",
+    "lib/payfi_web/controllers/swagger_controller.ex",
+    "lib/payfi_web/telemetry.ex",
+    "lib/payfi_web/endpoint.ex",
+    "lib/payfi_web/gettext.ex",
+    "lib/payfi.ex",
+    "lib/payfi/repo.ex",
+    "lib/payfi/workers/minute_worker.ex",
+    "test/support/"
+
+  ]
+}

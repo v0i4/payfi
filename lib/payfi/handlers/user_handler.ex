@@ -22,9 +22,4 @@ defmodule Payfi.Handlers.UserHandler do
       _ -> {:reply, {:error, "Error creating user"}, state}
     end
   end
-
-  def handle_call({:get_user, email}, _from, state) do
-    user = Accounts.get_user!(email)
-    {:reply, {:ok, user}, state}
-  end
 end
