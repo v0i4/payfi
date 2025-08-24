@@ -26,7 +26,7 @@ defmodule Payfi.Handlers.ParticipationHandler do
     else
       with {:ok, participation} <- Payfi.Participations.create_participation(params) do
         record = {params["user_id"], params["draw_id"]}
-        new_state = [record] ++ [state]
+        new_state = [record | state]
         {:reply, {:ok, participation}, new_state}
       else
         {:error, reason} -> {:reply, {:error, reason}, state}
@@ -41,10 +41,10 @@ defmodule Payfi.Handlers.ParticipationHandler do
 
   def lookup_cache(record_key, state) do
     if Enum.member?(state, record_key) do
-      #  IO.inspect("CACHE HIT")
+      IO.inspect("CACHE HIT")
       true
     else
-      # IO.inspect("CACHE MISS")
+      IO.inspect("CACHE MISS")
       false
     end
   end

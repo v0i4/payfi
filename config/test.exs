@@ -8,7 +8,7 @@ import Config
 config :payfi, Payfi.Repo,
   username: "postgres",
   password: "postgres",
-  database: "payfi_dev",
+  database: "payfi_test",
   hostname: "localhost",
   port: 5500,
   pool_size: 5,

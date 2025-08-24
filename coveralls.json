@@ -9,6 +9,8 @@
     "lib/payfi_web/gettext.ex",
     "lib/payfi.ex",
     "lib/payfi/repo.ex",
+    "lib/payfi/application.ex",
+    "lib/payfi/supervisor.ex",
     "lib/payfi/workers/minute_worker.ex",
     "test/support/"
 
