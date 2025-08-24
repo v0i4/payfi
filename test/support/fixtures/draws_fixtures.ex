@@ -11,7 +11,7 @@ defmodule Payfi.DrawsFixtures do
     {:ok, draw} =
       attrs
       |> Enum.into(%{
-        date: ~D[2025-08-21],
+        date: Date.utc_today(),
         name: "some name"
       })
       |> Payfi.Draws.create_draw()
